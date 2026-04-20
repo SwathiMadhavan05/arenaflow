@@ -52,14 +52,15 @@ def post_advance_phase():
 
 @app.post("/api/chat")
 async def chat_endpoint(req: ChatRequest):
-    api_key = os.getenv("GOOGLE_API_KEY")
+    api_key = os.getenv("GOOGLE_API_KEY", "").strip()
     if not api_key:
         raise HTTPException(status_code=500, detail="GOOGLE_API_KEY not set")
     
     state = get_venue_state()
     context_prompt = build_system_prompt(state)
     
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={api_key}"
+    url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"
+    headers = {"x-goog-api-key": api_key}
     payload = {
         "systemInstruction": {
             "parts": [{"text": context_prompt}]
@@ -71,11 +72,14 @@ async def chat_endpoint(req: ChatRequest):
     
     async with httpx.AsyncClient() as client:
         try:
-            response = await client.post(url, json=payload, timeout=15.0)
+            response = await client.post(url, json=payload, headers=headers, timeout=15.0)
             response.raise_for_status()
             data = response.json()
             reply = data["candidates"][0]["content"]["parts"][0]["text"]
             return {"reply": reply, "context_used": context_prompt}
+        except httpx.HTTPStatusError as e:
+            detail = e.response.text if e.response is not None else "Gemini request failed"
+            raise HTTPException(status_code=500, detail=f"Gemini request failed: {detail}")
         except Exception as e:
             raise HTTPException(status_code=500, detail=str(e))
 
