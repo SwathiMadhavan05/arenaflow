@@ -1,0 +1,22 @@
+# Secrets
+.env
+**/.env
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+backend/venv/
+
+# Node/Vite
+node_modules/
+frontend/node_modules/
+dist/
+frontend/dist/
+
+# Logs and local files
+*.log
+.DS_Store
+.idea/
+.vscode/
