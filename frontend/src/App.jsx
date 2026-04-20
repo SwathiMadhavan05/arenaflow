@@ -31,7 +31,7 @@ const useVenueState = () => {
 
 const FanAssistant = ({ state }) => {
   const [chatLog, setChatLog] = useState([
-    { role: 'assistant', text: 'Hello! I am your ArenaFlow Fan Assistant powered by Gemini AI. Need help finding facilities or understanding the crowd logic right now?' }
+    { role: 'assistant', text: 'Hello! I am your ease Fan Assistant powered by Gemini AI. Need help finding facilities or understanding the crowd logic right now?' }
   ]);
   const [inputStr, setInputStr] = useState('');
 
@@ -56,7 +56,7 @@ const FanAssistant = ({ state }) => {
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
         </div>
         <div>
-          <h2 className="text-3xl font-black text-gray-800 tracking-tight">Arena Assistant Copilot</h2>
+          <h2 className="text-3xl font-black text-gray-800 tracking-tight">ease Assistant Copilot</h2>
           <p className="text-gray-500 font-medium">Ask our advanced AI crowd navigator for live optimized routing!</p>
         </div>
       </div>
@@ -141,7 +141,7 @@ export default function App() {
       <header className="bg-[#121212] text-white p-5 shadow-lg flex justify-between items-center px-8 border-b-2 border-gray-700">
         <h1 className="text-3xl font-black tracking-tighter flex items-center gap-2">
           <svg className="w-8 h-8 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
-          <span className="text-blue-100">ArenaFlow</span>
+          <span className="text-blue-100">ease</span>
           <span className="opacity-40 text-sm font-medium tracking-widest uppercase ml-2 pt-1 hidden md:block border-l pl-3 border-gray-700">Master Operations System</span>
         </h1>
         <div className="flex items-center gap-6">

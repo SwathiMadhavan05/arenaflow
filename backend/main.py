@@ -59,7 +59,7 @@ async def chat_endpoint(req: ChatRequest):
     state = get_venue_state()
     context_prompt = build_system_prompt(state)
     
-    url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"
+    models = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-2.0-flash-lite"]
     headers = {"x-goog-api-key": api_key}
     payload = {
         "systemInstruction": {
@@ -71,17 +71,26 @@ async def chat_endpoint(req: ChatRequest):
     }
     
     async with httpx.AsyncClient() as client:
-        try:
-            response = await client.post(url, json=payload, headers=headers, timeout=15.0)
-            response.raise_for_status()
-            data = response.json()
-            reply = data["candidates"][0]["content"]["parts"][0]["text"]
-            return {"reply": reply, "context_used": context_prompt}
-        except httpx.HTTPStatusError as e:
-            detail = e.response.text if e.response is not None else "Gemini request failed"
-            raise HTTPException(status_code=500, detail=f"Gemini request failed: {detail}")
-        except Exception as e:
-            raise HTTPException(status_code=500, detail=str(e))
+        last_error = "Gemini request failed"
+        for model in models:
+            url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
+            try:
+                response = await client.post(url, json=payload, headers=headers, timeout=15.0)
+                response.raise_for_status()
+                data = response.json()
+                reply = data["candidates"][0]["content"]["parts"][0]["text"]
+                return {"reply": reply, "context_used": context_prompt, "model": model}
+            except httpx.HTTPStatusError as e:
+                status_code = e.response.status_code if e.response is not None else 500
+                last_error = e.response.text if e.response is not None else "Gemini request failed"
+                if status_code in (429, 503):
+                    continue
+                raise HTTPException(status_code=500, detail=f"Gemini request failed: {last_error}")
+            except Exception as e:
+                last_error = str(e)
+                break
+
+        raise HTTPException(status_code=503, detail=f"Gemini is temporarily unavailable: {last_error}")
 
 # Execute the static deployment matrix coupling the Vite distribution inherently into the backend runtime 
 # This automatically handles the exact cross-origin deployment resolution for Google Cloud natively!

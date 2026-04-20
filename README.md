@@ -1,6 +1,6 @@
-# ArenaFlow - Smart Venue Management Platform
+# ease - Smart Venue Management Platform
 
-ArenaFlow is a completely integrated full-stack simulation, management, and predictive AI suite developed specifically for modern stadium operations.
+ease is a completely integrated full-stack simulation, management, and predictive AI suite developed specifically for modern stadium operations.
 
 ## Setup Instructions
 
@@ -50,7 +50,7 @@ gcloud run deploy arenaflow-master \
 ---
 
 ## The 3-Minute Demonstration Script
-To properly demonstrate the ArenaFlow application to operations stakeholders, follow this linear interactive progression:
+To properly demonstrate the ease application to operations stakeholders, follow this linear interactive progression:
 
 1. **Top-Level Spatial Tracking**: Start securely on the unified `Command Centre` tab. Demonstrate the 60% left-side **SVG Heatmap**. Show how clicking the side toggles isolates spatial capacities across *Washrooms, Crowd Models, Gates etc*. Highlight how these dynamically bind to simulation payloads.
 
